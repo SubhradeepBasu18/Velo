@@ -1,0 +1,9 @@
+--> Dark theme (black, golden theme)
+--> Responsive design
+--> Pages
+    - Landing Page (Navbar, Hero Section, Feature Cards, Footer)
+    - Login/Signup Page (With Google OAuth)
+    - Dashboard Page (Campaign Creation, Campaign List)
+    - Campaign Page (Campaign Details, Analytics - Messages Failed, Messages Sent, Messages Pending, Messages Delivered)
+    - Profile Page (User Profile, Settings)
+    - Create Campaign Page (Campaign Title, Short Description, CSV upload section/manual entry, Message Template, Customization Options[with custom names], schedule options)
