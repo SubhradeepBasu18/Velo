@@ -6,7 +6,7 @@ const userSchema = new mongoose.Schema<UserType>({
         type: String, 
         required: true
     },
-    lastName: {
+    lastName: { 
         type: String, 
         required: true
     },
@@ -17,13 +17,18 @@ const userSchema = new mongoose.Schema<UserType>({
     },
     password: {
         type: String, 
-        required: true
     },
     organization: {
         type: String
     },
     refreshToken: {
         type: String
+    },
+    providerType: {
+        type: String,
+        enum: ["auth0", "custom"],
+        default: "custom",
+        required: true
     }
 }, {
     timestamps: true

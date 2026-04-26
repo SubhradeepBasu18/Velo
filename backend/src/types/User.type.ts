@@ -2,7 +2,8 @@ export interface UserType {
     firstName: string;
     lastName: string;
     email: string;
-    password: string;
+    password?: string;
     organization?: string;
     refreshToken?: string;
+    providerType?: string;
 }
