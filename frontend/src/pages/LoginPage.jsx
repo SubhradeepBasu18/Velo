@@ -1,7 +1,8 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { Logo } from "../components/Logo";
 import { Google } from "../icons";
 import { useNavigate } from "react-router-dom";
+import { useAuth0 } from "@auth0/auth0-react";
 
 export const LoginPage = () => {
   const navigate = useNavigate();
@@ -10,6 +11,14 @@ export const LoginPage = () => {
   const [password, setPassword] = useState("");
   const [name, setName] = useState("");
   const handleSubmit = () => navigate("/dashboard");
+
+  const { 
+    loginWithRedirect: login,
+  } = useAuth0();
+
+  const signup = () => {
+    login({ authorizationParams: { screen_hint: 'signup' } });
+  };
 
   return (
     <div className="min-h-screen bg-bg text-text font-sans flex items-center justify-center">
@@ -25,7 +34,7 @@ export const LoginPage = () => {
           </p>
         </div>
         <div className="card p-7">
-          <button onClick={handleSubmit} className="ghost-btn w-full py-2.5 px-4 rounded-lg text-sm flex items-center justify-center gap-2.5 mb-5">
+          <button onClick={signup} className="ghost-btn w-full py-2.5 px-4 rounded-lg text-sm flex items-center justify-center gap-2.5 mb-5">
             <Google /> Continue with Google
           </button>
           <div className="flex items-center gap-3 mb-5">

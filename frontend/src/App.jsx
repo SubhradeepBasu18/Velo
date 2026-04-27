@@ -16,6 +16,8 @@ function AppShellWrapper({ children }) {
   const location = useLocation();
   const navigate = useNavigate();
 
+  
+
   // Derive sidebar page name from current path
   const path = location.pathname;
   let sidebarPage = 'dashboard';

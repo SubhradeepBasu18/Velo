@@ -1,10 +1,11 @@
-import React from "react";
+import React, { useEffect } from "react";
 import { LandingNavbar } from "../components/LandingNavbar";
 import { Ticker } from "../components/Ticker";
 import { HeroBranding } from "../components/HeroBranding";
 import { Logo } from "../components/Logo";
 import { Zap, Mail, Clock, BarChart, Shield, Users, ArrowRight } from "../icons";
 import { useNavigate } from "react-router-dom";
+import { useAuth0 } from "@auth0/auth0-react";
 
 export const LandingPage = () => {
   const navigate = useNavigate();
@@ -16,6 +17,18 @@ export const LandingPage = () => {
     { icon: <Shield />, title: "Webhook callbacks", desc: "Receive batch results at your endpoint the moment a campaign finishes." },
     { icon: <Users />, title: "Team collaboration", desc: "Organise campaigns by group, assign ownership, and collaborate across your team." },
   ];
+
+
+  const { isAuthenticated, user, getAccessTokenSilently } = useAuth0();
+
+  useEffect(() => {
+    if (isAuthenticated && user) {
+      getAccessTokenSilently().then((token) => {
+        console.log(token);
+        console.log(user);
+      });
+    }
+  }, [isAuthenticated, user, getAccessTokenSilently]);
 
   return (
     <div className="min-h-screen bg-bg text-text font-sans">
