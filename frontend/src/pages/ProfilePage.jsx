@@ -28,6 +28,8 @@ export const ProfilePage = () => {
               <div><label className="form-label">First name</label><input className="input-field" defaultValue="Alex" /></div>
               <div><label className="form-label">Last name</label><input className="input-field" defaultValue="Kumar" /></div>
               <div style={{ gridColumn: "1/-1" }}><label className="form-label">Email</label><input className="input-field" defaultValue="alex@company.com" type="email" /></div>
+              <div style={{ gridColumn: "1/-1" }}><label className="form-label">Password</label><input className="input-field" defaultValue="********" type="password" /></div>
+              <div style={{ gridColumn: "1/-1" }}><label className="form-label">Confirm Password</label><input className="input-field" defaultValue="********" type="password" /></div>
               <div style={{ gridColumn: "1/-1" }}><label className="form-label">Organization</label><input className="input-field" defaultValue="Acme Inc." /></div>
             </div>
             <button className="gold-btn" style={{ marginTop: 16, padding: "8px 18px", borderRadius: 8, fontSize: 14 }}>Save changes</button>
