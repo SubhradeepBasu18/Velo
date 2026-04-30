@@ -8,10 +8,11 @@ export interface UserType {
     organization?: string;
     refreshToken?: string;
     providerType?: string;
+    auth0Id?: string;
 }
 
 export interface UserDocument extends Document, UserType {
     isPasswordMatch(password: string): Promise<boolean>;
-    generateAccessToken(): Promise<string>;
-    generateRefreshToken(): Promise<string>;
+    generateAccessToken(): string;
+    generateRefreshToken(): string;
 }

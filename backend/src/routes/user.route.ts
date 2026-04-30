@@ -1,13 +1,42 @@
 import { Router } from "express";
-import { loginUser, registerUser, logoutUser } from "../controllers/user.controller.ts";
+import {
+    syncAuth0User,
+    registerUser,
+    logoutUser,
+    loginUser,
+    completeProfile
+} from "../controllers/user.controller.ts";
 import { verifyJWT } from "../middleware/auth.middleware.ts";
 
-const router = Router();
+const userRouter = Router();
 
-router.post("/register", registerUser);
+userRouter.post("/register", registerUser);
+userRouter.post("/login", loginUser);
 
-router.post("/login", verifyJWT, loginUser);
+/**
+ * 
+ * 
+Frontend (Auth0 login)
+        ↓
+verifyJWT (who are you?)
+        ↓
+syncAuth0User (do I know you?)
+        ↓
+completeProfile (finish setup)
+        ↓
+normal app usage
+ */
+userRouter.post("/auth0-sync", verifyJWT, syncAuth0User);
 
-router.post("/logout", verifyJWT, logoutUser);
+userRouter.post("/complete-profile", verifyJWT, completeProfile);
 
-export default router;
+userRouter.post("/logout", verifyJWT, logoutUser);
+
+userRouter.get("/profile", verifyJWT, (req: any, res) => {
+    if (!req.user) {
+        return res.status(404).json({ message: "User not onboarded" });
+    }
+    res.json(req.user);
+});
+
+export default userRouter;
