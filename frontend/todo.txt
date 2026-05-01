@@ -1,9 +1,8 @@
---> Dark theme (black, golden theme)
---> Responsive design
---> Pages
-    - Landing Page (Navbar, Hero Section, Feature Cards, Footer)
-    - Login/Signup Page (With Google OAuth)
-    - Dashboard Page (Campaign Creation, Campaign List)
-    - Campaign Page (Campaign Details, Analytics - Messages Failed, Messages Sent, Messages Pending, Messages Delivered)
-    - Profile Page (User Profile, Settings)
-    - Create Campaign Page (Campaign Title, Short Description, CSV upload section/manual entry, Message Template, Customization Options[with custom names], schedule options)
+BUG
+
+#1 Login
+- If user first log in via custom auth
+- then try to log in via google auth
+- stuck cz google auth doesn't have user data
+- but email is already registered
+- payload does not have user email to verify in middleware

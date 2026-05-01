@@ -3,6 +3,7 @@ import { BrowserRouter as Router, Routes, Route, useLocation, useNavigate } from
 import "./styles/global.css";
 import { LandingPage } from "./pages/LandingPage";
 import { LoginPage } from "./pages/LoginPage";
+import { Auth0Callback } from "./pages/Auth0Callback";
 import { DashboardPage } from "./pages/DashboardPage";
 import { CampaignsPage } from "./pages/CampaignsPage";
 import { CampaignPage } from "./pages/CampaignPage";
@@ -50,6 +51,7 @@ export default function App() {
       <Routes>
         <Route path="/" element={<LandingPage />} />
         <Route path="/login" element={<LoginPage />} />
+        <Route path="/callback" element={<Auth0Callback />} />
         
         {/* All app pages are wrapped with AppShell */}
         <Route path="/dashboard" element={

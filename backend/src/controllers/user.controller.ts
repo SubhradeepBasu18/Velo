@@ -161,10 +161,11 @@ export const syncAuth0User = asyncHandler(async (req: any, res) => {
 
     const auth0Id = req.auth?.payload?.sub;
     let email = req.auth?.payload?.email;
+    const token = req.headers.authorization?.split(" ")[1];
 
     // If email missing → fetch from Auth0
     if (!email) {
-        const token = req.headers.authorization?.split(" ")[1];
+        
 
         const AUTH0_ISSUER = process.env.AUTH0_ISSUER!;
 
@@ -202,11 +203,20 @@ export const syncAuth0User = asyncHandler(async (req: any, res) => {
     }
 
     const needsOnboarding = !user.firstName || !user.organization;
+    const options = {
+        httpOnly: true,
+        secure: false,
+        sameSite: "strict" as const,
+        domain: "localhost",
+    }
 
-    res.status(200).json({
+
+    res.status(200)
+    .cookie("accessToken", token, options)
+    .json({
         user,
         isNewUser: needsOnboarding,
-    });
+    })
 });
 
 export const completeProfile = asyncHandler(async (req: any, res) => {

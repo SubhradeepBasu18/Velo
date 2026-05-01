@@ -32,8 +32,16 @@ export const verifyJWT = asyncHandler(async (req: any, res, next) => {
 
     // AUTH0 FLOW
     if (decoded.iss?.startsWith(AUTH0_ISSUER)) {
+        // Temporarily set Authorization header if token came from cookie
+        const originalAuthHeader = req.headers.authorization;
+        if (!req.headers.authorization && req.cookies?.accessToken) {
+            req.headers.authorization = `Bearer ${req.cookies.accessToken}`;
+        }
+        
         await new Promise((resolve, reject) => {
             checkAuth0Jwt(req, res, (err) => {
+                // Restore original header
+                req.headers.authorization = originalAuthHeader;
                 if (err) {
                     console.error("Auth0 verification failed:", err);
                     return reject(err);

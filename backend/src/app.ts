@@ -3,6 +3,7 @@ import cookieParser from "cookie-parser";
 import userRouter from "./routes/user.route.ts";
 import AppError from "./utils/AppError.ts";
 import type { Request, Response, NextFunction } from "express";
+import cors from "cors";
 
 const app = express();
 
@@ -10,6 +11,12 @@ app.get("/", (_req, res) => {
     res.json({ message: "Health check" });
 });
 
+app.use(cors({
+    origin: process.env.CORS_ORIGIN || "*",
+    credentials: true,
+    allowedHeaders: ['Content-Type', 'Authorization'],
+    methods: ['GET', 'POST', 'PUT', 'DELETE', 'PATCH', 'OPTIONS']
+}));
 app.use(express.json());
 app.use(cookieParser());
 app.use(express.urlencoded({ extended: true }));
