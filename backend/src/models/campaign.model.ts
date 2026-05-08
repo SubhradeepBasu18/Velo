@@ -1,5 +1,5 @@
 import mongoose from "mongoose";
-import type { CampaignType } from "../types/campaign.type.ts";
+import type { CampaignType } from "../types/Campaign.type.ts";
 
 const campaignSchema = new mongoose.Schema<CampaignType>({
     
@@ -7,6 +7,17 @@ const campaignSchema = new mongoose.Schema<CampaignType>({
         type: String,
         required: true,
         trim: true
+    },
+    description:{
+        type: String,
+    },
+    channel: {
+        type: String,
+        enum: ["email", "sms"],
+        required: true
+    },
+    groupName: {
+        type: String,
     },
     createdBy: {
         type: mongoose.Schema.Types.ObjectId,

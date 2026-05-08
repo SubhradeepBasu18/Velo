@@ -1,6 +1,8 @@
 import express from "express";
 import cookieParser from "cookie-parser";
 import userRouter from "./routes/user.route.ts";
+import messageRouter from "./routes/message.route.ts";
+import campaignRouter from "./routes/campaign.route.ts";
 import AppError from "./utils/AppError.ts";
 import type { Request, Response, NextFunction } from "express";
 import cors from "cors";
@@ -22,6 +24,8 @@ app.use(cookieParser());
 app.use(express.urlencoded({ extended: true }));
 app.use(express.static("public"));
 app.use("/user",userRouter);
+app.use("/message",messageRouter);
+app.use("/campaign",campaignRouter);
 
 // 404 handler
 app.use((_req, _res, next) => {

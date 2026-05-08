@@ -1,7 +1,10 @@
 import {z} from "zod";
 
 export const CampaignSchema = z.object({
-    campaignName: z.string().min(1, "Campaign name is required"),
+    campaignName: z.string().min(4, "Campaign name is required"),
+    description: z.string().max(200, "Description must be less than 200 characters").optional(),
+    channel: z.enum(["email", "sms"]),
+    groupName: z.string().max(100, "Group name must be less than 100 characters").optional(),
     createdBy: z.string().min(1, "Created by is required"),
     scheduledFor: z.enum(["now", "later"]),
     scheduledAt: z.date().optional(),
