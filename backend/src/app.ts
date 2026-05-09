@@ -19,10 +19,12 @@ app.use(cors({
     allowedHeaders: ['Content-Type', 'Authorization'],
     methods: ['GET', 'POST', 'PUT', 'DELETE', 'PATCH', 'OPTIONS']
 }));
+
 app.use(express.json());
 app.use(cookieParser());
 app.use(express.urlencoded({ extended: true }));
 app.use(express.static("public"));
+
 app.use("/user",userRouter);
 app.use("/message",messageRouter);
 app.use("/campaign",campaignRouter);

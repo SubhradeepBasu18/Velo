@@ -5,6 +5,6 @@ import { createNewMessage } from "../controllers/message.controller.ts";
 const messageRouter = Router()
 
 // add message
-messageRouter.post("/addMessage", verifyJWT, createNewMessage);
+messageRouter.post("/", verifyJWT, createNewMessage);
 
 export default messageRouter;
