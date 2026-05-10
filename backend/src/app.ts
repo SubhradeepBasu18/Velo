@@ -3,6 +3,7 @@ import cookieParser from "cookie-parser";
 import userRouter from "./routes/user.route.ts";
 import messageRouter from "./routes/message.route.ts";
 import campaignRouter from "./routes/campaign.route.ts";
+import emailRouter from "./routes/email.route.ts";
 import AppError from "./utils/AppError.ts";
 import type { Request, Response, NextFunction } from "express";
 import cors from "cors";
@@ -28,6 +29,7 @@ app.use(express.static("public"));
 app.use("/user",userRouter);
 app.use("/message",messageRouter);
 app.use("/campaign",campaignRouter);
+app.use("/email",emailRouter);
 
 // 404 handler
 app.use((_req, _res, next) => {

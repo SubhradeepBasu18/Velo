@@ -17,8 +17,7 @@ export const createCampaign = asyncHandler(async (req: AuthRequest, res) => {
         
     if (req.body.recipients) {
             try {
-                req.body.recipients =
-                    JSON.parse(req.body.recipients);
+                req.body.recipients = JSON.parse(req.body.recipients);
             } catch {
                 throw new AppError(
                     "Invalid recipients JSON format",
@@ -28,8 +27,7 @@ export const createCampaign = asyncHandler(async (req: AuthRequest, res) => {
         }
 
         // validate request
-        const parsedData =
-            CampaignSchema.safeParse(req.body);
+        const parsedData = CampaignSchema.safeParse(req.body);
 
         if (!parsedData.success) {
             const formattedErrors =
@@ -38,8 +36,7 @@ export const createCampaign = asyncHandler(async (req: AuthRequest, res) => {
                         acc: Record<string, string>,
                         issue
                     ) => {
-                        const field =
-                            issue.path[0] as string;
+                        const field = issue.path[0] as string;
                         acc[field] = issue.message;
                         return acc;
                     },
@@ -63,10 +60,9 @@ export const createCampaign = asyncHandler(async (req: AuthRequest, res) => {
         }
 
         // validate message template
-        const messageTemplate =
-            await Message.findById(
-                data.messageBodyId
-            );
+        const messageTemplate = await Message.findById(
+            data.messageBodyId
+        );
 
         if (!messageTemplate) {
             throw new AppError(
@@ -79,18 +75,14 @@ export const createCampaign = asyncHandler(async (req: AuthRequest, res) => {
         let csvRecipients: any[] = [];
 
         if (req.file) {
-            csvRecipients =
-                await parseCSVBuffer(
-                    req.file.buffer
-                );
+            csvRecipients = await parseCSVBuffer(req.file.buffer);
         }
 
         // merge all recipients
-        const finalRecipients =
-            mergeRecipients(
-                csvRecipients,
-                data.recipients || []
-            );
+        const finalRecipients = mergeRecipients(
+            csvRecipients,
+            data.recipients || []
+        );
 
         // validate recipients
         if (!finalRecipients.length) {
@@ -101,8 +93,7 @@ export const createCampaign = asyncHandler(async (req: AuthRequest, res) => {
         }
 
         // generate normalized csv
-        const csvBuffer =
-            generateCSVBuffer(finalRecipients);
+        const csvBuffer = generateCSVBuffer(finalRecipients);
 
         // upload final csv
         const finalCSVUrl =
@@ -137,35 +128,30 @@ export const createCampaign = asyncHandler(async (req: AuthRequest, res) => {
 
         // optional fields
         if (data.description) {
-            campaignData.description =
-                data.description;
+            campaignData.description = data.description;
         }
 
         if (data.groupName) {
-            campaignData.groupName =
-                data.groupName;
+            campaignData.groupName = data.groupName;
         }
 
         if (data.scheduledAt) {
-            campaignData.scheduledAt =
-                data.scheduledAt;
+            campaignData.scheduledAt = data.scheduledAt;
         }
 
         if (data.analyticsId) {
-            campaignData.analyticsId =
-                data.analyticsId;
+            campaignData.analyticsId = data.analyticsId;
         }
 
         // create campaign
-        const campaign =
+        const campaign = 
             await Campaign.create(
                 campaignData
             );
 
         return res.status(201).json({
             success: true,
-            message:
-                "Campaign created successfully",
+            message: "Campaign created successfully",
             data: campaign,
         });
     }
