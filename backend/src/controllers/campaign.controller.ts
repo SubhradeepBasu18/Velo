@@ -12,6 +12,7 @@ import { parseCSVBuffer } from "../utils/parseCSVBuffer.ts";
 import { mergeRecipients } from "../utils/mergeRecipients.ts";
 import { generateCSVBuffer } from "../utils/generateCSV.ts";
 import { uploadCSVToCloudinary } from "../utils/uploadCSVToCloudinary.ts";
+import { appendEmailToQueue } from "../utils/AppendQueue.ts";
 
 export const createCampaign = asyncHandler(async (req: AuthRequest, res) => {
         
@@ -148,6 +149,15 @@ export const createCampaign = asyncHandler(async (req: AuthRequest, res) => {
             await Campaign.create(
                 campaignData
             );
+
+        appendEmailToQueue({
+            campaignId: campaign._id.toString(),
+            recipients: finalRecipients,
+            subject: messageTemplate.subject,
+            body: messageTemplate.body,
+            scheduleLater: !!data.scheduledAt,
+            scheduleTime: data.scheduledAt || new Date(),
+        });
 
         return res.status(201).json({
             success: true,

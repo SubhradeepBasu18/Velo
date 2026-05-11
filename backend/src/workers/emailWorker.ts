@@ -9,7 +9,19 @@ const connection = {
 const worker = new Worker(
     'emailQueue',
     async (job) => {
-        console.log(`Processing job ${job.id}:`, job.data);
+        const { to, subject, body, recipientName, campaignId } = job.data;
+        
+        console.log(`Processing email job ${job.id}:`, {
+            to,
+            subject,
+            recipientName,
+            campaignId
+        });
+        
+        // TODO: Implement actual email sending logic
+        // Example: await sendEmail({ to, subject, body, recipientName });
+        
+        console.log(`Email sent successfully to ${to}`);
     },
     {connection}
 );
