@@ -1,9 +1,13 @@
+import { configDotenv } from "dotenv";
+configDotenv({quiet: true})
+
 import { Worker } from "bullmq";
+import { sendEmail } from "../services/email.service.ts";
 
 const connection = {
     host: process.env.REDIS_HOST || '127.0.0.1',
     port: Number(process.env.REDIS_PORT) || 6379,
-    password: process.env.REDIS_PASSWORD
+    password: process.env.REDIS_PASSWORD || 'add-pass-if-required'
 }
 
 const worker = new Worker(
@@ -18,12 +22,16 @@ const worker = new Worker(
             campaignId
         });
         
-        // TODO: Implement actual email sending logic
-        // Example: await sendEmail({ to, subject, body, recipientName });
-        
+        const {response} = await sendEmail(to, subject, body);
         console.log(`Email sent successfully to ${to}`);
     },
-    {connection}
+    {
+        connection, 
+        limiter: { // 10 emails in 1 second
+            max: 10, 
+            duration: 1000
+        }
+    }
 );
 
 worker.on('completed', (job) => {
