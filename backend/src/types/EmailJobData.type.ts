@@ -11,3 +11,10 @@ export interface EmailRecipient {
     email: string;
     name?: string;
 }
+
+export interface FailedJobData{
+    originalJobId: string | undefined;
+    jobData: EmailJobData;
+    error: string;
+    failedAt: Date;
+}

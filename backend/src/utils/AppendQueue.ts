@@ -3,7 +3,8 @@
 // After campaign is created, call this function to add jobs to the queue
 // Return if the jobs are added are queue with schedule time (now or later)
 
-import type { EmailJobData } from "../types/EmailJobData.type.ts";
+import type { EmailJobData, FailedJobData } from "../types/EmailJobData.type.ts";
+import dlq from "../workers/queues/dlq.ts";
 import emailQueue from "../workers/queues/emailQueue.ts";
 
 export const appendEmailToQueue = async(emailJobData: EmailJobData) => {
@@ -23,7 +24,12 @@ export const appendEmailToQueue = async(emailJobData: EmailJobData) => {
                 to: recipient.email,
                 recipientName: recipient.name
             }, {
-                delay
+                delay,
+                attempts: 2,
+                backoff: {
+                    type: "fixed",
+                    delay: 3000 // 3 seconds
+                }
             });
             results.success++;
         } catch (error) {
@@ -35,3 +41,7 @@ export const appendEmailToQueue = async(emailJobData: EmailJobData) => {
 
     return results;
 };
+
+export const appendFailedTasksToDLQ = async(failedJobData: FailedJobData) => {
+    await dlq.add('failedTask', failedJobData);
+}

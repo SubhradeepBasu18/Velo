@@ -3,6 +3,7 @@ configDotenv({quiet: true})
 
 import { Worker } from "bullmq";
 import { sendEmail } from "../services/email.service.ts";
+import { appendFailedTasksToDLQ } from "../utils/AppendQueue.ts";
 
 const connection = {
     host: process.env.REDIS_HOST || '127.0.0.1',
@@ -14,7 +15,7 @@ const worker = new Worker(
     'emailQueue',
     async (job) => {
         const { to, subject, body, recipientName, campaignId } = job.data;
-        
+
         console.log(`Processing email job ${job.id}:`, {
             to,
             subject,
@@ -22,7 +23,10 @@ const worker = new Worker(
             campaignId
         });
         
-        const {response} = await sendEmail(to, subject, body);
+        const {response, accepted, rejected} = await sendEmail(to, subject, body);
+        console.log("Response: ", response);
+        console.log("Accepted: ", accepted);
+        console.log("Rejected: ", rejected);
         console.log(`Email sent successfully to ${to}`);
     },
     {
@@ -38,6 +42,19 @@ worker.on('completed', (job) => {
     console.log(`Job ${job.id} completed`);
 });
 
-worker.on('failed', (job, err) => {
+worker.on('failed', async (job, err) => {
     console.log(`Job ${job?.id} failed with error: ${err.message}`);
+
+    if(!job) return;
+
+    if(job.attemptsMade && job.opts?.attempts && job.attemptsMade >= job.opts.attempts){
+        console.log(`Job ${job.id} has failed ${job.attemptsMade} times, moving to DLQ`);
+
+        await appendFailedTasksToDLQ({
+            originalJobId: job?.id!,
+            jobData: job.data,
+            error: err.message,
+            failedAt: new Date()
+        })
+    }
 });

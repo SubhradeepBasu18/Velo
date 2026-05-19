@@ -144,10 +144,7 @@ export const createCampaign = asyncHandler(async (req: AuthRequest, res) => {
         }
 
         // create campaign
-        const campaign = 
-            await Campaign.create(
-                campaignData
-            );
+        const campaign = await Campaign.create(campaignData);
 
         appendEmailToQueue({
             campaignId: campaign._id.toString(),
