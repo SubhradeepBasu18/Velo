@@ -1,10 +1,10 @@
 import { Router } from "express";
 import {
-    syncAuth0User,
-    registerUser,
-    logoutUser,
-    loginUser,
-    completeProfile
+        syncAuth0User,
+        registerUser,
+        logoutUser,
+        loginUser,
+        completeProfile
 } from "../controllers/user.controller.ts";
 import { verifyJWT } from "../middleware/auth.middleware.ts";
 
@@ -33,10 +33,10 @@ userRouter.post("/complete-profile", verifyJWT, completeProfile);
 userRouter.post("/logout", verifyJWT, logoutUser);
 
 userRouter.get("/profile", verifyJWT, (req: any, res) => {
-    if (!req.user) {
-        return res.status(404).json({ message: "User not onboarded" });
-    }
-    res.json(req.user);
+        if (!req.user) {
+                return res.status(404).json({ message: "User not onboarded" });
+        }
+        res.json(req.user);
 });
 
 export default userRouter;

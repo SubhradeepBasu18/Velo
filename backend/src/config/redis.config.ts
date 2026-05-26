@@ -1,13 +1,5 @@
-import { Queue } from "bullmq";
-
-const connection = {
+export const redisConnection = {
     host: process.env.REDIS_HOST || "localhost",
     port: parseInt(process.env.REDIS_PORT || "6379"),
     password: process.env.REDIS_PASSWORD || "velo-redis-queue"
 }
-
-const emailQueue = new Queue("emailQueue", {
-    connection
-})
-
-export default emailQueue

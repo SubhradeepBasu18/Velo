@@ -165,8 +165,6 @@ export const syncAuth0User = asyncHandler(async (req: any, res) => {
 
     // If email missing → fetch from Auth0
     if (!email) {
-        
-
         const AUTH0_ISSUER = process.env.AUTH0_ISSUER!;
 
         const response = await axios.get(
@@ -209,7 +207,6 @@ export const syncAuth0User = asyncHandler(async (req: any, res) => {
         sameSite: "strict" as const,
         domain: "localhost",
     }
-
 
     res.status(200)
     .cookie("accessToken", token, options)

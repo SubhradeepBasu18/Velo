@@ -8,7 +8,7 @@ import { appendFailedTasksToDLQ } from "../utils/AppendQueue.ts";
 const connection = {
     host: process.env.REDIS_HOST || '127.0.0.1',
     port: Number(process.env.REDIS_PORT) || 6379,
-    password: process.env.REDIS_PASSWORD || 'add-pass-if-required'
+    password: process.env.REDIS_PASSWORD || 'velo-redis-queue'
 }
 
 const worker = new Worker(
