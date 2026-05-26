@@ -40,18 +40,12 @@ export const CampaignSchema = z
         //     .optional(),
 
         // manual recipients
-        recipients: z
-            .array(
-                z.object({
-                    email: z.email(),
-
-                    name: z
-                        .string()
-                        .trim()
-                        .optional(),
-                })
-            )
-            .optional(),
+        recipients: z.array(
+            z.object({
+                email: z.any(),
+                name: z.any().optional()
+            })
+        ).optional(),
 
         messageBodyId: z
             .string()

@@ -42,22 +42,42 @@ export const userSchema = z
 
 
 export const registerUserSchema = z.object({
-    firstName: z.string().min(1, "First name is required"),
+  firstName: z.string().min(1, "First name is required"),
 
-    lastName: z.string().min(1, "Last name is required"),
+  lastName: z.string().min(1, "Last name is required"),
 
-    email: z.email("Invalid email"),
+  email: z
+    .string()
+    .email("Invalid email")
+    .refine((email) => {
+      const [, domain = ""] = email.split("@");
 
-    password: z.string().min(6, "Password must be at least 6 characters"),
+      return ["gmail.com", "outlook.com", "yahoo.com"]
+        .includes(domain);
+    }, {
+      message: "Only supported email providers allowed: [gmail.com, outlook.com, yahoo.com]"
+    }),
 
-    confirmPassword: z.string().min(6, "Password must be at least 6 characters"),
+  password: z.string().min(6, "Password must be at least 6 characters"),
 
-    organization: z.string().optional(),
+  confirmPassword: z.string().min(6, "Password must be at least 6 characters"),
 
-    providerType: z.enum(["auth0", "custom"]),
+  organization: z.string().optional(),
+
+  providerType: z.enum(["auth0", "custom"]),
 })
 
 export const loginUserSchema = z.object({
-    email: z.email("Invalid email"),
-    password: z.string().min(6, "Password must be at least 6 characters"),
+  email: z
+    .string()
+    .email("Invalid email")
+    .refine((email) => {
+      const [, domain = ""] = email.split("@");
+
+      return ["gmail.com", "outlook.com", "yahoo.com"]
+        .includes(domain);
+    }, {
+      message:  "Only supported email providers allowed: [gmail.com, outlook.com, yahoo.com]"
+    }),
+  password: z.string().min(6, "Password must be at least 6 characters"),
 })
